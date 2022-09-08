@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Dynamic;
 using BookStore.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace BookStore.Controllers
 {
@@ -12,16 +14,32 @@ namespace BookStore.Controllers
     {
         [ViewData]
         public string Title { get; set; }
+
+        private readonly IConfiguration _newBookALertconfiguration;
+        public Homecontroller(IOptionsSnapshot<NewBookAlertConfig> newBookALertconfiguration)
+        {
+
+          _newBookALertconfiguration= (IConfiguration)newBookALertconfiguration.Value;
+        }
+
         public ViewResult Index()
         {
+
+            //var newBookAlert = new NewBookAlertConfig();
+            //_newBookALertconfiguration.Bind("NewBookalert", newBookAlert);
+            //bool isDisplay = newBookAlert.DisplayNewBookAlert;
             Title = "Index";
             return View();
         }
+
+        [Route("about-us")]
         public ViewResult AboutUs()
         {
             Title = "AboutUs";
             return View();
         }
+
+
         public ViewResult ContactUs()
         {
             Title = "ContactUs";

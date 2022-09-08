@@ -15,5 +15,10 @@ namespace BookStore.Data
         public int LanguageId { get; set; }
         public int Pages { get; set; }
         public Language Language { get; set; }
+        public string CoverImgPath { get; set; }
+        public string BookPDFURL { get; set; }
+
+
+        public ICollection<BookGallery> bookGallery { get; set; }
     }
 }

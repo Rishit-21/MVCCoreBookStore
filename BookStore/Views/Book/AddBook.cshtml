@@ -1,4 +1,5 @@
 ﻿@model BookModel
+@inject BookStore.Models.Repository.ILanguageRepository _languageRepo
 @using BookStore.Enums;
 @{
     ViewData["Title"] = "Add New book";
@@ -17,16 +18,9 @@
         </div>
     }
 
-    <div class="d-flex justify-content-center"  >
-        <div class="spinner-border" role="status" id="myLoader" style="display:none">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
 
-    <form method="post" data-ajax="true" 
-          data-ajax-complete="myComplete" data-ajax-success="mySuccess" 
-         data-ajax-failure="myFailure" data-ajax-loading="#myLoader"
-          asp-action="AddBook" asp-controller="Book">
+    <form method="post"
+          asp-action="AddBook" asp-controller="Book" enctype="multipart/form-data">
 
         <div class="form-group">
             <label asp-for="Title"></label>
@@ -54,7 +48,7 @@
 
         <div class="form-group">
             <label asp-for="LanguageId"></label>
-            <select asp-for="LanguageId" class="form-control" asp-items="ViewBag.languages">
+            <select asp-for="LanguageId" class="form-control" asp-items="(await _languageRepo.GetLanguages()).Select(x=> new SelectListItem() { Text=x.Name,Value=x.Id.ToString()})">
                 <option value="">Choose Your language</option>
             </select>
             <span asp-validation-for="LanguageId" class="text-danger"></span>
@@ -65,6 +59,34 @@
             <input asp-for="Pages" class="form-control" />
             <span asp-validation-for="Pages" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="CoverPhoto" class="control-1abel ">
+            </label>
+            <div class="custom-file">
+                <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GalleryFiles" class="control-1abel ">
+            </label>
+            <div class="custom-file">
+                <input asp-for="GalleryFiles" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="BookPDF" class="control-1abel ">
+            </label>
+            <div class="custom-file">
+                <input asp-for="BookPDF" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="BookPDF" class="text-danger"></span>
+        </div>
 
         <div class="form-group">
             <input type="submit" value="Add Book" class="btn btn-primary" />
@@ -73,17 +95,17 @@
     </form>
 </div>
 
-@section script{
-    <script>
-        function myComplete(data) {
-            alert("I am from complete");
-        }
-        function mySuccess(data) {
-            alert("I am Success");
-        }
+@*@section script{
+        <script>
+            function myComplete(data) {
+                alert("I am from complete");
+            }
+            function mySuccess(data) {
+                alert("I am Success");
+            }
 
-        function myFailure(data) {
-            alert("I am failure");
-        }
-    </script>
-}
+            function myFailure(data) {
+                alert("I am failure");
+            }
+        </script>
+    }*@
