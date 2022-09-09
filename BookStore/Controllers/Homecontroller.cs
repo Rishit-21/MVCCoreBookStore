@@ -15,11 +15,11 @@ namespace BookStore.Controllers
         [ViewData]
         public string Title { get; set; }
 
-        private readonly IConfiguration _newBookALertconfiguration;
+        private readonly NewBookAlertConfig _newBookALertconfiguration;
         public Homecontroller(IOptionsSnapshot<NewBookAlertConfig> newBookALertconfiguration)
         {
 
-          _newBookALertconfiguration= (IConfiguration)newBookALertconfiguration.Value;
+          _newBookALertconfiguration= newBookALertconfiguration.Value;
         }
 
         public ViewResult Index()
