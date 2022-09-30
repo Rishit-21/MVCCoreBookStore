@@ -4,6 +4,7 @@ using BookStore.Models.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,9 +28,22 @@ namespace BookStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BookStoreContext>(
-                options=>options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
-                 
+                options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+
                 );
+            services.Configure<IdentityOptions>(options =>
+                {
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password . RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+           
+
+            });
+
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookStoreContext>();
             services.AddControllersWithViews();
 #if DEBUG
             services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -41,6 +55,7 @@ namespace BookStore
 
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.Configure<NewBookAlertConfig>(_configuration.GetSection("NewBookalert"));
         }
 
